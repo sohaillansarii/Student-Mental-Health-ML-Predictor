@@ -100,7 +100,7 @@ if submit_button:
 
             st.markdown(f"### Your Mental Health Signal Score: `{score} / 10`")
             
-            if score < 4:
+            if score < 5:
                 st.warning("**Signal: Strained**\n\nYour responses suggest elevated strain right now. Small shifts in sleep or screen time can go a long way.")
             elif score < 7:
                 st.info("**Signal: Balanced**\n\nYour rhythm looks fairly steady, with some room to recover and reset.")
