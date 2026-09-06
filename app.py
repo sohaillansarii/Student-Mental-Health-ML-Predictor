@@ -1,21 +1,34 @@
 import streamlit as st
 import joblib
 import pandas as pd
+import os
 
+st.set_page_config(page_title="Student Mental Health Predictor", page_icon="🧠")
+st.title("🧠 Student Mental Health ML Predictor")
+
+# 1. Load the model
 @st.cache_resource
 def load_model():
-    return joblib.load('Mental_Health_Model.pkl')
+    model_path = 'Mental_Health_Model.pkl'
+    if not os.path.exists(model_path):
+        st.error("❌ Model file 'Mental_Health_Model.pkl' not found in repository!")
+        return None
+    try:
+        return joblib.load(model_path)
+    except Exception as e:
+        st.error(f"❌ Failed to load model. This is usually a version mismatch. Error: {e}")
+        st.info("💡 Tip: Try retraining your model locally using the same Python version as Streamlit Cloud (3.14) or use Hugging Face Spaces.")
+        return None
 
 model = load_model()
 
+if model is None:
+    st.stop()
 
-top_countries = ['Other', 'India', 'USA', 'Canada', 'Australia', 'UK', 'Germany', 'Mexico', 'Turkey', 'France']
+# 2. Constants
+top_countries = ['Other','India','USA','Canada','Australia','UK','Germany','Mexico','Turkey','France']
 
-
-st.set_page_config(page_title="Student Mental Health Predictor", page_icon="🧠", layout="centered")
-st.title("🧠 Student Mental Health ML Predictor")
-st.markdown("Enter the student's details below to predict their mental health score.")
-
+# 3. UI Inputs
 col1, col2 = st.columns(2)
 
 with col1:
@@ -35,7 +48,7 @@ with col2:
     sleep_hours_per_night = st.number_input("Sleep Hours Per Night", min_value=0.0, max_value=24.0, value=7.0, step=0.5)
     stress_level = st.selectbox("Stress Level", ['Low', 'Medium', 'High', 'Very High'])
 
-
+# 4. Prediction
 if st.button("Predict Mental Health Score", type="primary"):
     country_group = country if country in top_countries else "Other"
     
@@ -59,4 +72,4 @@ if st.button("Predict Mental Health Score", type="primary"):
         prediction = model.predict(input_row)[0]
         st.success(f"### 🎯 Predicted Mental Health Score: {round(float(prediction), 2)}")
     except Exception as e:
-        st.error(f"Prediction failed. Please check your inputs. Error: {e}")
+        st.error(f"Prediction failed: {e}")
