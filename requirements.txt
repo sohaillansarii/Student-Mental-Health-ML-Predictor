@@ -1,7 +1,7 @@
 streamlit
 joblib
-scikit-learn==1.6.1
-pandas==2.3.3
-numpy==1.26.4
+scikit-learn
+pandas
+numpy
 scipy
 threadpoolctl
