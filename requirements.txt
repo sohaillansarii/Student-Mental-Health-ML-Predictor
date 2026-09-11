@@ -1,7 +1,6 @@
-streamlit
+fastapi
+uvicorn
+pydantic
 joblib
-scikit-learn
 pandas
-numpy
-scipy
-threadpoolctl
+scikit-learn
