@@ -18,7 +18,6 @@ app.add_middleware(
 )
 
 
-#A first Pydantic Model
 class StudentData(BaseModel):
     age                     : int = Field(..., ge=10, le=100)
     gender                  : Literal['Male', 'Female']
@@ -36,10 +35,8 @@ class StudentData(BaseModel):
 
 
 
-# Describe what we send back
 class PredictionResponse(BaseModel):
     predicted_mental_health_score:float
-    #6.777777 -> float
 
 
 
@@ -67,7 +64,7 @@ def predict(data: StudentData):
         'Physical_Activity_Hours'   :data.physical_activity_hours,
         'Sleep_Hours_Per_Night'     :data.sleep_hours_per_night,
         'Stress_Level'              :data.stress_level,
-        'Grouped_country'           :country_group
+        'Grouped_Country'           :country_group
    }])
 
    prediction = model.predict(input_row)[0] #6.77
